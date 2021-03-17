@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace LaravelInteraction\Vote;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphPivot;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
-use LaravelInteraction\Support\InteractionList;
-use LaravelInteraction\Support\Models\Interaction;
+use Illuminate\Support\Str;
 use LaravelInteraction\Vote\Events\VoteCanceled;
 use LaravelInteraction\Vote\Events\Voted;
 
@@ -21,13 +22,27 @@ use LaravelInteraction\Vote\Events\Voted;
  * @method static \LaravelInteraction\Vote\Vote|\Illuminate\Database\Eloquent\Builder withType(string $type)
  * @method static \LaravelInteraction\Vote\Vote|\Illuminate\Database\Eloquent\Builder query()
  */
-class Vote extends Interaction
+class Vote extends MorphPivot
 {
-    protected $interaction = InteractionList::VOTE;
+    protected function uuids(): bool
+    {
+        return (bool) config('vote.uuids');
+    }
 
-    protected $tableNameKey = 'votes';
+    public function getIncrementing(): bool
+    {
+        return $this->uuids() ? true : parent::getIncrementing();
+    }
 
-    protected $morphTypeName = 'voteable';
+    public function getKeyName(): string
+    {
+        return $this->uuids() ? 'uuid' : parent::getKeyName();
+    }
+
+    public function getKeyType(): string
+    {
+        return $this->uuids() ? 'string' : parent::getKeyType();
+    }
 
     protected $dispatchesEvents = [
         'saved' => Voted::class,
@@ -38,12 +53,38 @@ class Vote extends Interaction
         'upvote' => 'bool',
     ];
 
+    public function getTable()
+    {
+        return config('vote.table_names.votes') ?: parent::getTable();
+    }
+
+    protected static function boot(): void
+    {
+        parent::boot();
+
+        static::creating(
+            function (self $vote): void {
+                if ($vote->uuids()) {
+                    $vote->{$vote->getKeyName()} = Str::orderedUuid();
+                }
+            }
+        );
+    }
+
     /**
      * @return \Illuminate\Database\Eloquent\Relations\MorphTo
      */
     public function voteable(): MorphTo
     {
         return $this->morphTo();
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(config('vote.models.user'), config('vote.column_names.user_foreign_key'));
     }
 
     /**
@@ -72,5 +113,16 @@ class Vote extends Interaction
     public function isDownvote(): bool
     {
         return ! $this->isUpvote();
+    }
+
+    /**
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param string $type
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeWithType(Builder $query, string $type): Builder
+    {
+        return $query->where('voteable_type', app($type)->getMorphClass());
     }
 }
