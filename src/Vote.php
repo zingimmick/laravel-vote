@@ -24,9 +24,26 @@ use LaravelInteraction\Vote\Events\Voted;
  */
 class Vote extends MorphPivot
 {
-    protected function uuids(): bool
+    protected $casts = [
+        'upvote' => 'bool',
+    ];
+
+    protected $dispatchesEvents = [
+        'saved' => Voted::class,
+        'deleted' => VoteCanceled::class,
+    ];
+
+    protected static function boot(): void
     {
-        return (bool) config('vote.uuids');
+        parent::boot();
+
+        static::creating(
+            function (self $vote): void {
+                if ($vote->uuids()) {
+                    $vote->{$vote->getKeyName()} = Str::orderedUuid();
+                }
+            }
+        );
     }
 
     public function getIncrementing(): bool
@@ -44,31 +61,53 @@ class Vote extends MorphPivot
         return $this->uuids() ? 'string' : parent::getKeyType();
     }
 
-    protected $dispatchesEvents = [
-        'saved' => Voted::class,
-        'deleted' => VoteCanceled::class,
-    ];
-
-    protected $casts = [
-        'upvote' => 'bool',
-    ];
-
     public function getTable()
     {
         return config('vote.table_names.votes') ?: parent::getTable();
     }
 
-    protected static function boot(): void
+    public function isDownvote(): bool
     {
-        parent::boot();
+        return ! $this->isUpvote();
+    }
 
-        static::creating(
-            function (self $vote): void {
-                if ($vote->uuids()) {
-                    $vote->{$vote->getKeyName()} = Str::orderedUuid();
-                }
-            }
-        );
+    public function isUpvote(): bool
+    {
+        return $this->upvote;
+    }
+
+    public function isVotedBy(Model $user): bool
+    {
+        return $user->is($this->voter);
+    }
+
+    public function isVotedTo(Model $object): bool
+    {
+        return $object->is($this->voteable);
+    }
+
+    /**
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param string $type
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeWithType(Builder $query, string $type): Builder
+    {
+        return $query->where('voteable_type', app($type)->getMorphClass());
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(config('vote.models.user'), config('vote.column_names.user_foreign_key'));
+    }
+
+    protected function uuids(): bool
+    {
+        return (bool) config('vote.uuids');
     }
 
     /**
@@ -82,47 +121,8 @@ class Vote extends MorphPivot
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function user(): BelongsTo
-    {
-        return $this->belongsTo(config('vote.models.user'), config('vote.column_names.user_foreign_key'));
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
     public function voter(): BelongsTo
     {
         return $this->user();
-    }
-
-    public function isVotedBy(Model $user): bool
-    {
-        return $user->is($this->voter);
-    }
-
-    public function isVotedTo(Model $object): bool
-    {
-        return $object->is($this->voteable);
-    }
-
-    public function isUpvote(): bool
-    {
-        return $this->upvote;
-    }
-
-    public function isDownvote(): bool
-    {
-        return ! $this->isUpvote();
-    }
-
-    /**
-     * @param \Illuminate\Database\Eloquent\Builder $query
-     * @param string $type
-     *
-     * @return \Illuminate\Database\Eloquent\Builder
-     */
-    public function scopeWithType(Builder $query, string $type): Builder
-    {
-        return $query->where('voteable_type', app($type)->getMorphClass());
     }
 }
