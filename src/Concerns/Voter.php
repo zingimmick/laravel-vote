@@ -164,6 +164,6 @@ trait Voter
      */
     protected function votedItems(string $class): MorphToMany
     {
-        return $this->morphedByMany($class, 'voteable', config('vote.models.vote'), config('vote.column_names.user_foreign_key'), 'voteable_id')->withTimestamps()->withPivot('upvote');
+        return $this->morphedByMany($class, 'voteable', config('vote.models.vote'), config('vote.column_names.user_foreign_key'))->withTimestamps()->withPivot('upvote');
     }
 }
