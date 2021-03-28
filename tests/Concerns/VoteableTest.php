@@ -12,10 +12,7 @@ class VoteableTest extends TestCase
 {
     public function modelClasses(): array
     {
-        return[
-            [Channel::class],
-            [User::class],
-        ];
+        return[[Channel::class], [User::class]];
     }
 
     /**
@@ -307,7 +304,10 @@ class VoteableTest extends TestCase
         $other = User::query()->create();
         $model = $modelClass::query()->create();
         $user->vote($model);
-        self::assertSame($modelClass::query()->whereKeyNot($model->getKey())->count(), $modelClass::query()->whereNotVotedBy($user)->count());
+        self::assertSame(
+            $modelClass::query()->whereKeyNot($model->getKey())->count(),
+            $modelClass::query()->whereNotVotedBy($user)->count()
+        );
         self::assertSame($modelClass::query()->count(), $modelClass::query()->whereNotVotedBy($other)->count());
     }
 
@@ -337,7 +337,10 @@ class VoteableTest extends TestCase
         $other = User::query()->create();
         $model = $modelClass::query()->create();
         $user->upvote($model);
-        self::assertSame($modelClass::query()->whereKeyNot($model->getKey())->count(), $modelClass::query()->whereNotUpvotedBy($user)->count());
+        self::assertSame(
+            $modelClass::query()->whereKeyNot($model->getKey())->count(),
+            $modelClass::query()->whereNotUpvotedBy($user)->count()
+        );
         self::assertSame($modelClass::query()->count(), $modelClass::query()->whereNotUpvotedBy($other)->count());
     }
 
@@ -367,7 +370,10 @@ class VoteableTest extends TestCase
         $other = User::query()->create();
         $model = $modelClass::query()->create();
         $user->downvote($model);
-        self::assertSame($modelClass::query()->whereKeyNot($model->getKey())->count(), $modelClass::query()->whereNotDownvotedBy($user)->count());
+        self::assertSame(
+            $modelClass::query()->whereKeyNot($model->getKey())->count(),
+            $modelClass::query()->whereNotDownvotedBy($user)->count()
+        );
         self::assertSame($modelClass::query()->count(), $modelClass::query()->whereNotDownvotedBy($other)->count());
     }
 }

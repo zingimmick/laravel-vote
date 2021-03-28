@@ -35,19 +35,15 @@ class TestCase extends BaseTestCase
 
     protected function getEnvironmentSetUp($app): void
     {
-        config(
-            [
-                'database.default' => 'testing',
-                'vote.models.user' => User::class,
-                'vote.uuids' => true,
-            ]
-        );
+        config([
+            'database.default' => 'testing',
+            'vote.models.user' => User::class,
+            'vote.uuids' => true,
+        ]);
     }
 
     protected function getPackageProviders($app): array
     {
-        return [
-            VoteServiceProvider::class,
-        ];
+        return [VoteServiceProvider::class];
     }
 }
