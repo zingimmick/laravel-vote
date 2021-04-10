@@ -14,6 +14,8 @@ use LaravelInteraction\Vote\Events\VoteCanceled;
 use LaravelInteraction\Vote\Events\Voted;
 
 /**
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Database\Eloquent\Model $user
  * @property \Illuminate\Database\Eloquent\Model $voter
  * @property \Illuminate\Database\Eloquent\Model $voteable

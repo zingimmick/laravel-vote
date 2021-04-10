@@ -18,9 +18,9 @@ class VoteableTest extends TestCase
     /**
      * @dataProvider modelClasses
      *
-     * @param \LaravelInteraction\Vote\Tests\Models\User|\LaravelInteraction\Vote\Tests\Models\Channel|string $modelClass
+     * @param \LaravelInteraction\Vote\Tests\Models\User|\LaravelInteraction\Vote\Tests\Models\Channel $modelClass
      */
-    public function testVotes(string $modelClass): void
+    public function testVotes($modelClass): void
     {
         $user = User::query()->create();
         $model = $modelClass::query()->create();
@@ -32,9 +32,9 @@ class VoteableTest extends TestCase
     /**
      * @dataProvider modelClasses
      *
-     * @param \LaravelInteraction\Vote\Tests\Models\User|\LaravelInteraction\Vote\Tests\Models\Channel|string $modelClass
+     * @param \LaravelInteraction\Vote\Tests\Models\User|\LaravelInteraction\Vote\Tests\Models\Channel $modelClass
      */
-    public function testVotersCount(string $modelClass): void
+    public function testVotersCount($modelClass): void
     {
         $user = User::query()->create();
         $model = $modelClass::query()->create();
@@ -49,9 +49,9 @@ class VoteableTest extends TestCase
     /**
      * @dataProvider modelClasses
      *
-     * @param \LaravelInteraction\Vote\Tests\Models\User|\LaravelInteraction\Vote\Tests\Models\Channel|string $modelClass
+     * @param \LaravelInteraction\Vote\Tests\Models\User|\LaravelInteraction\Vote\Tests\Models\Channel $modelClass
      */
-    public function testUpvotersCount(string $modelClass): void
+    public function testUpvotersCount($modelClass): void
     {
         $user = User::query()->create();
         $model = $modelClass::query()->create();
@@ -66,9 +66,9 @@ class VoteableTest extends TestCase
     /**
      * @dataProvider modelClasses
      *
-     * @param \LaravelInteraction\Vote\Tests\Models\User|\LaravelInteraction\Vote\Tests\Models\Channel|string $modelClass
+     * @param \LaravelInteraction\Vote\Tests\Models\User|\LaravelInteraction\Vote\Tests\Models\Channel $modelClass
      */
-    public function testDownvotersCount(string $modelClass): void
+    public function testDownvotersCount($modelClass): void
     {
         $user = User::query()->create();
         $model = $modelClass::query()->create();
@@ -83,9 +83,9 @@ class VoteableTest extends TestCase
     /**
      * @dataProvider modelClasses
      *
-     * @param \LaravelInteraction\Vote\Tests\Models\User|\LaravelInteraction\Vote\Tests\Models\Channel|string $modelClass
+     * @param \LaravelInteraction\Vote\Tests\Models\User|\LaravelInteraction\Vote\Tests\Models\Channel $modelClass
      */
-    public function testVotersCountForHumans(string $modelClass): void
+    public function testVotersCountForHumans($modelClass): void
     {
         $user = User::query()->create();
         $model = $modelClass::query()->create();
@@ -96,9 +96,9 @@ class VoteableTest extends TestCase
     /**
      * @dataProvider modelClasses
      *
-     * @param \LaravelInteraction\Vote\Tests\Models\User|\LaravelInteraction\Vote\Tests\Models\Channel|string $modelClass
+     * @param \LaravelInteraction\Vote\Tests\Models\User|\LaravelInteraction\Vote\Tests\Models\Channel $modelClass
      */
-    public function testUpvotersCountForHumans(string $modelClass): void
+    public function testUpvotersCountForHumans($modelClass): void
     {
         $user = User::query()->create();
         $model = $modelClass::query()->create();
@@ -109,9 +109,9 @@ class VoteableTest extends TestCase
     /**
      * @dataProvider modelClasses
      *
-     * @param \LaravelInteraction\Vote\Tests\Models\User|\LaravelInteraction\Vote\Tests\Models\Channel|string $modelClass
+     * @param \LaravelInteraction\Vote\Tests\Models\User|\LaravelInteraction\Vote\Tests\Models\Channel $modelClass
      */
-    public function testDownvotersCountForHumans(string $modelClass): void
+    public function testDownvotersCountForHumans($modelClass): void
     {
         $user = User::query()->create();
         $model = $modelClass::query()->create();
@@ -122,9 +122,9 @@ class VoteableTest extends TestCase
     /**
      * @dataProvider modelClasses
      *
-     * @param \LaravelInteraction\Vote\Tests\Models\User|\LaravelInteraction\Vote\Tests\Models\Channel|string $modelClass
+     * @param \LaravelInteraction\Vote\Tests\Models\User|\LaravelInteraction\Vote\Tests\Models\Channel $modelClass
      */
-    public function testIsVotedBy(string $modelClass): void
+    public function testIsVotedBy($modelClass): void
     {
         $user = User::query()->create();
         $model = $modelClass::query()->create();
@@ -141,9 +141,9 @@ class VoteableTest extends TestCase
     /**
      * @dataProvider modelClasses
      *
-     * @param \LaravelInteraction\Vote\Tests\Models\User|\LaravelInteraction\Vote\Tests\Models\Channel|string $modelClass
+     * @param \LaravelInteraction\Vote\Tests\Models\User|\LaravelInteraction\Vote\Tests\Models\Channel $modelClass
      */
-    public function testIsNotVotedBy(string $modelClass): void
+    public function testIsNotVotedBy($modelClass): void
     {
         $user = User::query()->create();
         $model = $modelClass::query()->create();
@@ -160,9 +160,9 @@ class VoteableTest extends TestCase
     /**
      * @dataProvider modelClasses
      *
-     * @param \LaravelInteraction\Vote\Tests\Models\User|\LaravelInteraction\Vote\Tests\Models\Channel|string $modelClass
+     * @param \LaravelInteraction\Vote\Tests\Models\User|\LaravelInteraction\Vote\Tests\Models\Channel $modelClass
      */
-    public function testIsUpvotedBy(string $modelClass): void
+    public function testIsUpvotedBy($modelClass): void
     {
         $user = User::query()->create();
         $model = $modelClass::query()->create();
@@ -179,9 +179,9 @@ class VoteableTest extends TestCase
     /**
      * @dataProvider modelClasses
      *
-     * @param \LaravelInteraction\Vote\Tests\Models\User|\LaravelInteraction\Vote\Tests\Models\Channel|string $modelClass
+     * @param \LaravelInteraction\Vote\Tests\Models\User|\LaravelInteraction\Vote\Tests\Models\Channel $modelClass
      */
-    public function testIsNotUpvotedBy(string $modelClass): void
+    public function testIsNotUpvotedBy($modelClass): void
     {
         $user = User::query()->create();
         $model = $modelClass::query()->create();
@@ -198,9 +198,9 @@ class VoteableTest extends TestCase
     /**
      * @dataProvider modelClasses
      *
-     * @param \LaravelInteraction\Vote\Tests\Models\User|\LaravelInteraction\Vote\Tests\Models\Channel|string $modelClass
+     * @param \LaravelInteraction\Vote\Tests\Models\User|\LaravelInteraction\Vote\Tests\Models\Channel $modelClass
      */
-    public function testIsDownvotedBy(string $modelClass): void
+    public function testIsDownvotedBy($modelClass): void
     {
         $user = User::query()->create();
         $model = $modelClass::query()->create();
@@ -217,9 +217,9 @@ class VoteableTest extends TestCase
     /**
      * @dataProvider modelClasses
      *
-     * @param \LaravelInteraction\Vote\Tests\Models\User|\LaravelInteraction\Vote\Tests\Models\Channel|string $modelClass
+     * @param \LaravelInteraction\Vote\Tests\Models\User|\LaravelInteraction\Vote\Tests\Models\Channel $modelClass
      */
-    public function testIsNotDownvotedBy(string $modelClass): void
+    public function testIsNotDownvotedBy($modelClass): void
     {
         $user = User::query()->create();
         $model = $modelClass::query()->create();
@@ -236,9 +236,9 @@ class VoteableTest extends TestCase
     /**
      * @dataProvider modelClasses
      *
-     * @param \LaravelInteraction\Vote\Tests\Models\User|\LaravelInteraction\Vote\Tests\Models\Channel|string $modelClass
+     * @param \LaravelInteraction\Vote\Tests\Models\User|\LaravelInteraction\Vote\Tests\Models\Channel $modelClass
      */
-    public function testVoters(string $modelClass): void
+    public function testVoters($modelClass): void
     {
         $user = User::query()->create();
         $model = $modelClass::query()->create();
@@ -251,9 +251,9 @@ class VoteableTest extends TestCase
     /**
      * @dataProvider modelClasses
      *
-     * @param \LaravelInteraction\Vote\Tests\Models\User|\LaravelInteraction\Vote\Tests\Models\Channel|string $modelClass
+     * @param \LaravelInteraction\Vote\Tests\Models\User|\LaravelInteraction\Vote\Tests\Models\Channel $modelClass
      */
-    public function testUpvoters(string $modelClass): void
+    public function testUpvoters($modelClass): void
     {
         $user = User::query()->create();
         $model = $modelClass::query()->create();
@@ -266,9 +266,9 @@ class VoteableTest extends TestCase
     /**
      * @dataProvider modelClasses
      *
-     * @param \LaravelInteraction\Vote\Tests\Models\User|\LaravelInteraction\Vote\Tests\Models\Channel|string $modelClass
+     * @param \LaravelInteraction\Vote\Tests\Models\User|\LaravelInteraction\Vote\Tests\Models\Channel $modelClass
      */
-    public function testDownvoters(string $modelClass): void
+    public function testDownvoters($modelClass): void
     {
         $user = User::query()->create();
         $model = $modelClass::query()->create();
@@ -281,9 +281,9 @@ class VoteableTest extends TestCase
     /**
      * @dataProvider modelClasses
      *
-     * @param \LaravelInteraction\Vote\Tests\Models\User|\LaravelInteraction\Vote\Tests\Models\Channel|string $modelClass
+     * @param \LaravelInteraction\Vote\Tests\Models\User|\LaravelInteraction\Vote\Tests\Models\Channel $modelClass
      */
-    public function testScopeWhereVotedBy(string $modelClass): void
+    public function testScopeWhereVotedBy($modelClass): void
     {
         $user = User::query()->create();
         $other = User::query()->create();
@@ -296,9 +296,9 @@ class VoteableTest extends TestCase
     /**
      * @dataProvider modelClasses
      *
-     * @param \LaravelInteraction\Vote\Tests\Models\User|\LaravelInteraction\Vote\Tests\Models\Channel|string $modelClass
+     * @param \LaravelInteraction\Vote\Tests\Models\User|\LaravelInteraction\Vote\Tests\Models\Channel $modelClass
      */
-    public function testScopeWhereNotVotedBy(string $modelClass): void
+    public function testScopeWhereNotVotedBy($modelClass): void
     {
         $user = User::query()->create();
         $other = User::query()->create();
@@ -314,9 +314,9 @@ class VoteableTest extends TestCase
     /**
      * @dataProvider modelClasses
      *
-     * @param \LaravelInteraction\Vote\Tests\Models\User|\LaravelInteraction\Vote\Tests\Models\Channel|string $modelClass
+     * @param \LaravelInteraction\Vote\Tests\Models\User|\LaravelInteraction\Vote\Tests\Models\Channel $modelClass
      */
-    public function testScopeWhereUpvotedBy(string $modelClass): void
+    public function testScopeWhereUpvotedBy($modelClass): void
     {
         $user = User::query()->create();
         $other = User::query()->create();
@@ -329,9 +329,9 @@ class VoteableTest extends TestCase
     /**
      * @dataProvider modelClasses
      *
-     * @param \LaravelInteraction\Vote\Tests\Models\User|\LaravelInteraction\Vote\Tests\Models\Channel|string $modelClass
+     * @param \LaravelInteraction\Vote\Tests\Models\User|\LaravelInteraction\Vote\Tests\Models\Channel $modelClass
      */
-    public function testScopeWhereNotUpvotedBy(string $modelClass): void
+    public function testScopeWhereNotUpvotedBy($modelClass): void
     {
         $user = User::query()->create();
         $other = User::query()->create();
@@ -347,9 +347,9 @@ class VoteableTest extends TestCase
     /**
      * @dataProvider modelClasses
      *
-     * @param \LaravelInteraction\Vote\Tests\Models\User|\LaravelInteraction\Vote\Tests\Models\Channel|string $modelClass
+     * @param \LaravelInteraction\Vote\Tests\Models\User|\LaravelInteraction\Vote\Tests\Models\Channel $modelClass
      */
-    public function testScopeWhereDownvotedBy(string $modelClass): void
+    public function testScopeWhereDownvotedBy($modelClass): void
     {
         $user = User::query()->create();
         $other = User::query()->create();
@@ -362,9 +362,9 @@ class VoteableTest extends TestCase
     /**
      * @dataProvider modelClasses
      *
-     * @param \LaravelInteraction\Vote\Tests\Models\User|\LaravelInteraction\Vote\Tests\Models\Channel|string $modelClass
+     * @param \LaravelInteraction\Vote\Tests\Models\User|\LaravelInteraction\Vote\Tests\Models\Channel $modelClass
      */
-    public function testScopeWhereNotDownvotedBy(string $modelClass): void
+    public function testScopeWhereNotDownvotedBy($modelClass): void
     {
         $user = User::query()->create();
         $other = User::query()->create();

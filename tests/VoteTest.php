@@ -12,17 +12,17 @@ use LaravelInteraction\Vote\Vote;
 class VoteTest extends TestCase
 {
     /**
-     * @var \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model|\LaravelInteraction\Vote\Tests\Models\User
+     * @var \LaravelInteraction\Vote\Tests\Models\User
      */
     protected $user;
 
     /**
-     * @var \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model|\LaravelInteraction\Vote\Tests\Models\Channel
+     * @var \LaravelInteraction\Vote\Tests\Models\Channel
      */
     protected $channel;
 
     /**
-     * @var \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model|object|\LaravelInteraction\Vote\Vote|null
+     * @var \LaravelInteraction\Vote\Vote
      */
     protected $vote;
 
@@ -33,7 +33,7 @@ class VoteTest extends TestCase
         $this->user = User::query()->create();
         $this->channel = Channel::query()->create();
         $this->user->vote($this->channel);
-        $this->vote = Vote::query()->first();
+        $this->vote = Vote::query()->firstOrFail();
     }
 
     public function testVoteTimestamp(): void
@@ -80,12 +80,12 @@ class VoteTest extends TestCase
         self::assertTrue($this->vote->isVotedBy($this->user));
     }
 
-    public function testIsUpvote()
+    public function testIsUpvote(): void
     {
         self::assertTrue($this->vote->isUpvote());
     }
 
-    public function testIsDownvote()
+    public function testIsDownvote(): void
     {
         self::assertFalse($this->vote->isDownvote());
     }

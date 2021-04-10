@@ -106,7 +106,7 @@ trait Voter
      */
     public function vote(Model $object, $upvote = true): void
     {
-        /** @var \LaravelInteraction\Vote\Vote $vote */
+        /** @var \LaravelInteraction\Vote\Vote|null $vote */
         $vote = ($this->relationLoaded('voterVotes') ? $this->voterVotes : $this->voterVotes())
             ->where('voteable_id', $object->getKey())
             ->where('voteable_type', $object->getMorphClass())
@@ -115,7 +115,7 @@ trait Voter
             return;
         }
 
-        if ($vote) {
+        if ($vote !== null) {
             $vote->upvote = $upvote;
             $vote->save();
 
