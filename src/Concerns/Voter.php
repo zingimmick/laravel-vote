@@ -19,7 +19,8 @@ trait Voter
      */
     public function cancelVote(Model $object): void
     {
-        if ($this->hasNotVoted($object)) {
+        $thisHasNotVoted = $this->hasNotVoted($object);
+        if ($thisHasNotVoted) {
             return;
         }
 

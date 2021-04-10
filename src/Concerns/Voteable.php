@@ -58,11 +58,13 @@ trait Voteable
 
     public function isDownvotedBy(Model $user): bool
     {
-        if (! $this->isVoter($user)) {
+        $thisIsVoter = $this->isVoter($user);
+        if (! $thisIsVoter) {
             return false;
         }
+        $downvotersThisRelationLoaded = $this->relationLoaded('downvoters');
 
-        if ($this->relationLoaded('downvoters')) {
+        if ($downvotersThisRelationLoaded) {
             return $this->downvoters->contains($user);
         }
 
@@ -89,11 +91,13 @@ trait Voteable
 
     public function isUpvotedBy(Model $user): bool
     {
-        if (! $this->isVoter($user)) {
+        $thisIsVoter = $this->isVoter($user);
+        if (! $thisIsVoter) {
             return false;
         }
+        $upvotersThisRelationLoaded = $this->relationLoaded('upvoters');
 
-        if ($this->relationLoaded('upvoters')) {
+        if ($upvotersThisRelationLoaded) {
             return $this->upvoters->contains($user);
         }
 
@@ -110,11 +114,13 @@ trait Voteable
      */
     public function isVotedBy(Model $user): bool
     {
-        if (! $this->isVoter($user)) {
+        $thisIsVoter = $this->isVoter($user);
+        if (! $thisIsVoter) {
             return false;
         }
+        $votersThisRelationLoaded = $this->relationLoaded('voters');
 
-        if ($this->relationLoaded('voters')) {
+        if ($votersThisRelationLoaded) {
             return $this->voters->contains($user);
         }
 
