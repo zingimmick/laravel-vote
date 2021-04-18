@@ -24,6 +24,10 @@ class VoterTest extends TestCase
                 'voteable_id' => $channel->getKey(),
             ]
         );
+        $user->load('voterVotes');
+        $user->cancelVote($channel);
+        $user->load('voterVotes');
+        $user->vote($channel);
     }
 
     public function testUpvote(): void

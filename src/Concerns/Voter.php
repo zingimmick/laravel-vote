@@ -7,6 +7,7 @@ namespace LaravelInteraction\Vote\Concerns;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
+use LaravelInteraction\Vote\Vote;
 
 /**
  * @property-read \Illuminate\Database\Eloquent\Collection|\LaravelInteraction\Vote\Vote[] $voterVotes
@@ -16,24 +17,32 @@ trait Voter
 {
     /**
      * @param \Illuminate\Database\Eloquent\Model $object
+     *
+     * @return bool
      */
-    public function cancelVote(Model $object): void
+    public function cancelVote(Model $object): bool
     {
         $hasNotVoted = $this->hasNotVoted($object);
         if ($hasNotVoted) {
-            return;
+            return true;
+        }
+        $voterVotesLoaded = $this->relationLoaded('voterVotes');
+        if ($voterVotesLoaded) {
+            $this->unsetRelation('voterVotes');
         }
 
-        $this->votedItems(get_class($object))
+        return (bool) $this->votedItems(get_class($object))
             ->detach($object->getKey());
     }
 
     /**
      * @param \Illuminate\Database\Eloquent\Model $object
+     *
+     * @return \LaravelInteraction\Vote\Vote
      */
-    public function downvote(Model $object): void
+    public function downvote(Model $object): Vote
     {
-        $this->vote($object, false);
+        return $this->vote($object, false);
     }
 
     /**
@@ -43,7 +52,7 @@ trait Voter
      */
     public function hasDownvoted(Model $object): bool
     {
-        return ($this->relationLoaded('votes') ? $this->voterVotes : $this->voterVotes())
+        return ($this->relationLoaded('voterVotes') ? $this->voterVotes : $this->voterVotes())
             ->where('voteable_id', $object->getKey())
             ->where('voteable_type', $object->getMorphClass())
             ->where('upvote', false)
@@ -72,7 +81,7 @@ trait Voter
      */
     public function hasUpvoted(Model $object): bool
     {
-        return ($this->relationLoaded('votes') ? $this->voterVotes : $this->voterVotes())
+        return ($this->relationLoaded('voterVotes') ? $this->voterVotes : $this->voterVotes())
             ->where('voteable_id', $object->getKey())
             ->where('voteable_type', $object->getMorphClass())
             ->where('upvote', true)
@@ -86,7 +95,7 @@ trait Voter
      */
     public function hasVoted(Model $object): bool
     {
-        return ($this->relationLoaded('votes') ? $this->voterVotes : $this->voterVotes())
+        return ($this->relationLoaded('voterVotes') ? $this->voterVotes : $this->voterVotes())
             ->where('voteable_id', $object->getKey())
             ->where('voteable_type', $object->getMorphClass())
             ->count() > 0;
@@ -94,40 +103,42 @@ trait Voter
 
     /**
      * @param \Illuminate\Database\Eloquent\Model $object
+     *
+     * @return \LaravelInteraction\Vote\Vote
      */
-    public function upvote(Model $object): void
+    public function upvote(Model $object): Vote
     {
-        $this->vote($object);
+        return $this->vote($object);
     }
 
     /**
      * @param \Illuminate\Database\Eloquent\Model $object
      * @param bool $upvote
+     *
+     * @return \LaravelInteraction\Vote\Vote
      */
-    public function vote(Model $object, $upvote = true): void
+    public function vote(Model $object, $upvote = true): Vote
     {
-        /** @var \LaravelInteraction\Vote\Vote|null $vote */
-        $vote = ($this->relationLoaded('voterVotes') ? $this->voterVotes : $this->voterVotes())
-            ->where('voteable_id', $object->getKey())
-            ->where('voteable_type', $object->getMorphClass())
-            ->first();
-        if ($vote && $vote->upvote === $upvote) {
-            return;
-        }
-
-        if ($vote !== null) {
-            $vote->upvote = $upvote;
+        $attributes = [
+            'voteable_id' => $object->getKey(),
+            'voteable_type' => $object->getMorphClass(),
+        ];
+        $values = [
+            'upvote' => $upvote,
+        ];
+        $vote = $this->voterVotes()
+            ->where($attributes)
+            ->firstOrNew($attributes, $values);
+        $vote->fill($values);
+        if ($vote->isDirty() || ! $vote->exists) {
+            $voterVotesLoaded = $this->relationLoaded('voterVotes');
+            if ($voterVotesLoaded) {
+                $this->unsetRelation('voterVotes');
+            }
             $vote->save();
-
-            return;
         }
 
-        $this->votedItems(get_class($object))
-            ->attach([
-                $object->getKey() => [
-                    'upvote' => $upvote,
-                ],
-            ]);
+        return $vote;
     }
 
     /**

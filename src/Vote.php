@@ -31,7 +31,8 @@ class Vote extends MorphPivot
     ];
 
     protected $dispatchesEvents = [
-        'saved' => Voted::class,
+        'created' => Voted::class,
+        'updated' => Voted::class,
         'deleted' => VoteCanceled::class,
     ];
 
