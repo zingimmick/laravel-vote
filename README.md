@@ -3,13 +3,10 @@
 User upvote/downvote behaviour for Laravel.
 
 <p align="center">
-<a href="https://github.com/laravel-interaction/vote/actions"><img src="https://github.com/laravel-interaction/vote/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://codecov.io/gh/laravel-interaction/vote"><img src="https://codecov.io/gh/laravel-interaction/vote/branch/master/graph/badge.svg" alt="Code Coverage" /></a>
 <a href="https://packagist.org/packages/laravel-interaction/vote"><img src="https://poser.pugx.org/laravel-interaction/vote/v/stable.svg" alt="Latest Stable Version"></a>
 <a href="https://packagist.org/packages/laravel-interaction/vote"><img src="https://poser.pugx.org/laravel-interaction/vote/downloads" alt="Total Downloads"></a>
 <a href="https://packagist.org/packages/laravel-interaction/vote"><img src="https://poser.pugx.org/laravel-interaction/vote/v/unstable.svg" alt="Latest Unstable Version"></a>
 <a href="https://packagist.org/packages/laravel-interaction/vote"><img src="https://poser.pugx.org/laravel-interaction/vote/license" alt="License"></a>
-<a href="https://codeclimate.com/github/laravel-interaction/vote/maintainability"><img src="https://api.codeclimate.com/v1/badges/bc449826a0493974a737/maintainability" alt="Code Climate" /></a>
 </p>
 
 > **Requires [PHP 7.2.0+](https://php.net/releases/)**
